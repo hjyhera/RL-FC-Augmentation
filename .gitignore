@@ -1,0 +1,47 @@
+# ========== 제외할 폴더들 ==========
+wandb/
+ablation_results/
+logs/
+eval_logs/
+MDD_val_test/
+GC-GAN-main/
+GAN/
+GraphAE/
+FC/
+__pycache__/
+*.pyc
+ppo_final/eval_logs/
+figs/
+ppo_final/logs/
+classifier_aug_models/
+classifier_baseline_models/
+ppo_final/logs/
+
+# 가상환경 폴더 (있다면)
+.venv/
+env/
+.conda/
+
+# Jupyter checkpoints
+.ipynb_checkpoints/
+
+# 대용량 데이터/모델 파일 (필요하면 더 추가)
+*.npz
+*.pth
+*.pt
+*.h5
+*.json
+*.log
+*.png
+
+# files
+ablation_study.py
+check_compatibility.py
+check_gpu_compatibility.py
+dual_network.py
+info.py
+make_val_test.py
+mlp_aug_classifier.py
+train_cycle.py
+
+vis.py
