@@ -26,8 +26,8 @@ We analyzed the contribution of each reward objective ($r_F, r_D, r_A, r_U$) and
   <img src="./image/Table2.png" width="48%" alt="Selection Strategy Comparison">
 </p>
 
-> **Left (Table 3):** Ablation study on the contribution of each reward component. [cite_start]Removing any single objective leads to performance degradation, confirming the necessity of the multi-objective framework[cite: 156, 171].
-> <br>**Right (Table 2):** Performance comparison across different selection methods. [cite_start]Our RL-based approach outperforms fixed heuristic strategies[cite: 153].
+> **Left (Table 3):** Ablation study on the contribution of each reward component. Removing any single objective leads to performance degradation, confirming the necessity of the multi-objective framework[cite: 156, 171].
+> <br>**Right (Table 2):** Performance comparison across different selection methods. Our RL-based approach outperforms fixed heuristic strategies.
 
 #### Impact of Scalarization Strategy
 We further investigated the effect of reward scalarization weights on the agent's learning.
@@ -44,7 +44,7 @@ We further investigated the effect of reward scalarization weights on the agent'
 The following graph illustrates the evolution of reward signals and the selection ratio during training.
 
 <p align="center">
-  <img src="./images/average_across_folds_only.jpg" width="80%" alt="Training Dynamics">
+  <img src="./images/average_across_folds_only.png" width="80%" alt="Training Dynamics">
 </p>
 
-> **Fig 2.** Temporal dynamics of multi-objective rewards and selection ratio. [cite_start]A three-phase pattern emerges: (1) **Utility ($r_U$)-driven expansion**, (2) **Diversity ($r_D$)-driven coverage**, and (3) **Fidelity/Alignment ($r_F, r_A$)-constrained stabilization**, resulting in a robust selection policy[cite: 191, 197].
+> **Fig 2.** Temporal dynamics of multi-objective rewards and selection ratio. [cite_start]A three-phase pattern emerges: (1) **Utility ($r_U$)-driven expansion**, (2) **Diversity ($r_D$)-driven coverage**, and (3) **Fidelity/Alignment ($r_F, r_A$)-constrained stabilization**, resulting in a robust selection policy.
