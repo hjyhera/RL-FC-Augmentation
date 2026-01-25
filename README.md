@@ -31,13 +31,12 @@ We analyzed the contribution of each reward objective ($r_F, r_D, r_A, r_U$) and
 
 #### Impact of Scalarization Strategy
 We further investigated the effect of reward scalarization weights on the agent's learning.
-Uniform linear scalarization(lambda_{all}=1.0) reduces F1 by 1.8% and doubles variance(std 2.45 to 4.85), as dense structural rewards(r_F,r_A) overshadow sparse utility reward(r_U), biasing optimization toward easier objectives. Prioritizing primary targets(lambda=1.0) over regularizers(lambda=0.5) balances learning, achieving the highest Accuracy(67.71%) and Stability(std: 1.04). 
 
 <p align="center">
   <img src="./images/Table4.png" width="60%" alt="Scalarization Strategy">
 </p>
 
-> **Table 4.** Performance comparison under different scalarization strategies (e.g., uniform vs. tuned weights). Tuned weights that prioritize utility and alignment yield superior diagnostic performance.
+> **Table 4.** Uniform linear scalarization(lambda_{all}=1.0) reduces F1 by 1.8% and doubles variance(std 2.45 to 4.85), as dense structural rewards(r_F,r_A) overshadow sparse utility reward(r_U), biasing optimization toward easier objectives. Prioritizing primary targets(lambda=1.0) over regularizers(lambda=0.5) balances learning, achieving the highest Accuracy(67.71%) and Stability(std: 1.04). 
 
 ---
 
