@@ -13,6 +13,12 @@ Our method outperforms representative GAN-based augmentation and RL-based select
 
 > **Table 1.** Classification performance comparison. [cite_start]Our method achieves the highest accuracy (**67.71%**) and F1-score (**69.18%**), significantly surpassing the no-augmentation baseline and other competitive methods[cite: 8, 135].
 
+<p align="center">
+  <img src="./images/Table2.png" width="90%" alt="Performance across selection methods.">
+</p>
+
+> **Table 1.** Performance across selection methods.
+
 ---
 
 ### 2. Ablation Studies & Analysis
@@ -23,11 +29,9 @@ We analyzed the contribution of each reward objective ($r_F, r_D, r_A, r_U$) and
 
 <p align="center">
   <img src="./images/Table3.png" width="48%" alt="Ablation Study on Rewards">
-  <img src="./image/Table2.png" width="48%" alt="Selection Strategy Comparison">
 </p>
 
 > **Left (Table 3):** Ablation study on the contribution of each reward component. Removing any single objective leads to performance degradation, confirming the necessity of the multi-objective framework[cite: 156, 171].
-> <br>**Right (Table 2):** Performance comparison across different selection methods. Our RL-based approach outperforms fixed heuristic strategies.
 
 #### Impact of Scalarization Strategy
 We further investigated the effect of reward scalarization weights on the agent's learning.
@@ -36,7 +40,13 @@ We further investigated the effect of reward scalarization weights on the agent'
   <img src="./images/Table4.png" width="60%" alt="Scalarization Strategy">
 </p>
 
-> **Table 4.** Uniform linear scalarization(lambda_{all}=1.0) reduces F1 by 1.8% and doubles variance(std 2.45 to 4.85), as dense structural rewards(r_F,r_A) overshadow sparse utility reward(r_U), biasing optimization toward easier objectives. Prioritizing primary targets(lambda=1.0) over regularizers(lambda=0.5) balances learning, achieving the highest Accuracy(67.71%) and Stability(std: 1.04). 
+> **Table 4.** Uniform linear scalarization(lambda_{all}=1.0) reduces F1 by 1.8% and doubles variance(std 2.45 to 4.85), as dense structural rewards(r_F,r_A) overshadow sparse utility reward(r_U), biasing optimization toward easier objectives. Prioritizing primary targets(lambda=1.0) over regularizers(lambda=0.5) balances learning, achieving the highest Accuracy(67.71%) and Stability(std: 1.04).
+
+<p align="center">
+  <img src="./images/Table5.png" width="60%" alt="Static Scoring">
+</p>
+
+> **Table 5.** Compared to a context-unaware "Static Scoring" baseline(selecting features independently), our RL framework improved F1 by 3.1%. The agent analyzes functional connectivity(s_t) to identify redundancy, mitigating mode collapse and ensuring diversity crucial for robust diagnostic generalization. 
 
 ---
 
