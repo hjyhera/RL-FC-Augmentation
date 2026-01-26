@@ -1,19 +1,55 @@
 # Reinforcement Learning with Multi Objective Rewards for Functional Connectivity Augmentation
 
+## 🔥 Motivation
+
+Functional connectivity (FC) derived from resting-state fMRI provides promising biomarkers for Major Depressive Disorder (MDD).
+However, limited and noisy annotations make deep diagnostic models highly brittle.  
+While generative augmentation can alleviate data scarcity, uncontrolled synthetic samples often introduce biologically implausible artifacts.
+
+To address this, we propose a reinforcement learning–based synthetic data filtering framework that curates synthetic FC samples using **multi-objective rewards**, balancing fidelity, diversity, alignment, and diagnostic utility.
+
 ## 📋 Overview
 <p align="center">
   <img src="./images/overview.jpg" width="90%" alt="Overview">
 </p>
     
-> **Fig 1.**  This figure presented in the overview comprises four stages: (A) iterative candidate selection guided by a multi-objective reward, (B) agent training of the PPO, (C) classifier training on curated augmentations, and (D) inference on new subjects.
+> **Fig 1.**  Our framework operates in four stages (Fig.1):
+
+- **Candidate Generation:** Pretrain a GAN to synthesize FC candidates  
+- **RL-based Selection:** A PPO agent filters candidates under multi-objective rewards  
+- **Classifier Training:** Train the diagnosis model using curated augmentations  
+- **Inference:** Apply the trained classifier to unseen subjects
+
+## 🎯 Multi-Objective Reward Formulation
+
+We define a vector-valued reward:
+
+\[
+r(s_t,a_t) = [r_F, r_D, r_A, r_U]^T
+\]
+
+- **Fidelity ($r_F$):** discriminator realism score  
+- **Diversity ($r_D$):** encourages coverage and prevents mode collapse  
+- **Alignment ($r_A$):** preserves manifold structure via autoencoder reconstruction  
+- **Utility ($r_U$):** improves downstream diagnostic performance  
+
+Rewards are aggregated using **Generalized Power Mean scalarization** for stable training.
 
 ## ⭐ Contributions
 
 (i) **RL-based Synthetic Data Filtering Framework.**  
-We propose a reinforcement learning–based synthetic data curation framework that formulates sample selection as a **vector-valued multi-objective reward optimization** problem, and learns a scalarized policy to enable **quality-controlled functional connectivity augmentation** for MDD diagnosis.
+We propose a reinforcement learning–based synthetic data filtering framework that formulates sample selection as a **vector-valued multi-objective reward modeling** problem, and optimizes a scalarized objective to enable **quality-controlled functional connectivity augmentation** for MDD diagnosis.
 
 (ii) **Interpretable Selection Dynamics Analysis.**  
-We introduce an analysis framework that quantifies **selection dynamics** throughout training and connects high-reward synthetic samples to **interpretable functional connectivity motifs**, ensuring transparent and reproducible augmentation.
+We introduce an analysis framework that quantifies **selection dynamics** throughout training and connects high-reward synthetic samples to **interpretable functional connectivity motifs**, ensuring transparent and reproducible curation.
+
+## 📂 Dataset & Experimental Setup
+
+- Dataset: **REST-meta-MDD**  
+- Subjects: 249 MDD / 228 Normal Controls  
+- Parcellation: Harvard-Oxford Atlas (112 ROIs)  
+- FC Construction: Pearson correlation + Fisher z-transform  
+- Evaluation: Subject-disjoint 5-fold cross-validation  
 
 
 ## 📊 Results
