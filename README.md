@@ -1,5 +1,13 @@
 # Reinforcement Learning with Multi Objective Rewards for Functional Connectivity Augmentation
 
+## 📋 Overview
+<p align="center">
+  <img src="./images/overview.jpg" width="90%" alt="Overview>
+</p>
+> **Overview.** This figure presented in the overview comprises four stages: (A) iterative candidate selection guided by a multi-objective reward, (B) agent training of the PPO, (C) classifier training on curated augmentations, and (D) inference on new subjects.
+
+
+
 ## 📊 Results
 
 We evaluated our framework on the **REST-meta-MDD** dataset using a 5-fold cross-validation scheme. The results demonstrate that our multi-objective RL agent consistently selects high-quality synthetic samples that improve downstream diagnostic performance.
