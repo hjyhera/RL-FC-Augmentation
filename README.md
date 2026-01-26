@@ -59,7 +59,7 @@ We introduce an analysis framework that quantifies **selection dynamics** throug
 We evaluated our framework on the **REST-meta-MDD** dataset using a 5-fold cross-validation scheme.   
 The results demonstrate that our multi-objective RL agent consistently selects high-quality synthetic samples that improve downstream diagnostic performance.
 
-### 1. Comparison with GAN-based augmentation and RL-based selection approaches
+### 1. Comparison with GAN-based Augmentation and RL-based Selection Approaches
 Our method outperforms representative GAN-based augmentation and RL-based selection baselines across all metrics (Accuracy, Sensitivity, Specificity, and F1-score).
 
 <p align="center">
@@ -68,7 +68,7 @@ Our method outperforms representative GAN-based augmentation and RL-based select
 
 > **Table 1.** Classification performance comparison. Our method achieves the highest accuracy (**67.71%**), sensitivity (**70.00%**), specificity (**65.22%**) and F1-score (**69.18%**), significantly surpassing the no-augmentation baseline and other competitive methods.
 
-### 2. Training Dynamics
+### 2. Dynamics of Reward-Selection Interactions
 The following graph illustrates the evolution of reward signals and the selection ratio during training.
 
 <p align="center">
@@ -77,7 +77,7 @@ The following graph illustrates the evolution of reward signals and the selectio
 
 > **Fig 2.** Temporal dynamics of multi-objective rewards and selection ratio. The learned policy consistently accepts approximately 55% of synthetic candidates on average. A three-phase pattern emerges: (1) **Utility ($r_U$)-driven expansion**, (2) **Diversity ($r_D$)-driven coverage**, and (3) **Fidelity/Alignment ($r_F, r_A$)-constrained stabilization**, resulting in a robust selection policy. 
 
-### 3. Comparison of selection strategies
+### 3. Comparison of Selection Strategies
 <p align="center">
   <img src="./images/Table2.png" width="90%" alt="Performance across selection methods.">
 </p>
@@ -90,7 +90,7 @@ The following graph illustrates the evolution of reward signals and the selectio
 - Ours: PPO-based multi-objective policy optimizing a balanced trade-off among fidelity, diversity, alignment, and downstream utility.
 
 
-## Ablation Studies & Analysis
+## 🔬 Ablation Studies & Analysis
 To validate the effectiveness of our proposed components, we conducted extensive ablation studies.
 
 ### 1. Impact of Reward Components
@@ -120,6 +120,39 @@ We further evaluate the impact of using a learned PPO-based policy for candidate
 
 > **Table 5.** Compared to a context-unaware "Static Scoring" baseline(selecting features independently), our RL framework improved F1 by 3.1%. The agent analyzes functional connectivity(s_t) to identify redundancy, mitigating mode collapse and ensuring diversity crucial for robust diagnostic generalization. 
 
----
+## ⚙️ Installation & Usage
+
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/yourusername/yourrepo.git
+cd yourrepo
+```
+
+### 2. Create Environment
+
+```bash
+conda create -n py39 python=3.9
+conda activate py39
+```
+
+### 3. Install Dependencies
+```bash
+pip install -r requirements.txt
+```
+
+### 4. Train the Generator (GAN)
+First, train the FC generator to synthesize candidate samples:
+
+```bash
+
+```
+
+### 5. Train the PPO Selection Agent
+Train the PPO agent with multi-objective rewards:
+
+```bash
+
+```
 
 
