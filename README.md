@@ -89,7 +89,7 @@ The following graph illustrates the evolution of reward signals and the selectio
 - Ours: PPO-based multi-objective policy optimizing a balanced trade-off among fidelity, diversity, alignment, and downstream utility.
 
 
-## 🔬 Ablation Studies & Analysis
+## 🧪 Ablation Studies & Analysis
 To validate the effectiveness of our proposed components, we conducted extensive ablation studies.
 
 ### 1. Impact of Reward Components
@@ -151,7 +151,7 @@ First, train the FC generator to synthesize candidate samples:
 Train the PPO agent with multi-objective rewards:
 
 ```bash
-python train_mp_light_optimized.py
+python train_cycle_mp_light_optimized.py
 ```
 
 
