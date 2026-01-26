@@ -7,6 +7,13 @@
     
 > **Fig 1.**  This figure presented in the overview comprises four stages: (A) iterative candidate selection guided by a multi-objective reward, (B) agent training of the PPO, (C) classifier training on curated augmentations, and (D) inference on new subjects.
 
+## ⭐ Contributions
+
+(i) **RL-based Synthetic Data Filtering Framework.**  
+We propose a reinforcement learning–based synthetic data curation framework that formulates sample selection as a **vector-valued multi-objective reward optimization** problem, and learns a scalarized policy to enable **quality-controlled functional connectivity augmentation** for MDD diagnosis.
+
+(ii) **Interpretable Selection Dynamics Analysis.**  
+We introduce an analysis framework that quantifies **selection dynamics** throughout training and connects high-reward synthetic samples to **interpretable functional connectivity motifs**, ensuring transparent and reproducible augmentation.
 
 
 ## 📊 Results
