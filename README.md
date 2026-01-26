@@ -6,7 +6,7 @@ Functional connectivity (FC) derived from resting-state fMRI provides promising 
 However, limited and noisy annotations make deep diagnostic models highly brittle.    
 While generative augmentation can alleviate data scarcity, uncontrolled synthetic samples often introduce biologically implausible artifacts.  
 
-To address this, we propose a reinforcement learning–based synthetic data filtering framework that curates synthetic FC samples using 
+To address this, we propose a reinforcement learning–based synthetic data filtering framework that curates synthetic FC samples using   
 **multi-objective rewards**, balancing fidelity, diversity, alignment, and diagnostic utility.
 
 ## 📋 Overview
@@ -47,7 +47,7 @@ We introduce an analysis framework that quantifies **selection dynamics** throug
 
 ## 📂 Dataset & Experimental Setup
 
-- Dataset: **REST-meta-MDD**  
+- Dataset: REST-meta-MDD
 - Subjects: 249 MDD / 228 Normal Controls  
 - Parcellation: Harvard-Oxford Atlas (112 ROIs)  
 - FC Construction: Pearson correlation + Fisher z-transform  
@@ -56,7 +56,8 @@ We introduce an analysis framework that quantifies **selection dynamics** throug
 
 ## 📊 Results
 
-We evaluated our framework on the **REST-meta-MDD** dataset using a 5-fold cross-validation scheme. The results demonstrate that our multi-objective RL agent consistently selects high-quality synthetic samples that improve downstream diagnostic performance.
+We evaluated our framework on the **REST-meta-MDD** dataset using a 5-fold cross-validation scheme.   
+The results demonstrate that our multi-objective RL agent consistently selects high-quality synthetic samples that improve downstream diagnostic performance.
 
 ### 1. Comparison with GAN-based augmentation and RL-based selection approaches
 Our method outperforms representative GAN-based augmentation and RL-based selection baselines across all metrics (Accuracy, Sensitivity, Specificity, and F1-score).
@@ -65,9 +66,18 @@ Our method outperforms representative GAN-based augmentation and RL-based select
   <img src="./images/Table1.png" width="90%" alt="Comparison with baselines">
 </p>
 
-> **Table 1.** Classification performance comparison. Our method achieves the highest accuracy (**67.71%**), sensitivity (**70.00%**), specificity (**65.22**) and F1-score (**69.18%**), significantly surpassing the no-augmentation baseline and other competitive methods.
+> **Table 1.** Classification performance comparison. Our method achieves the highest accuracy (**67.71%**), sensitivity (**70.00%**), specificity (**65.22%**) and F1-score (**69.18%**), significantly surpassing the no-augmentation baseline and other competitive methods.
 
-### 2. Comparison of selection strategies
+### 2. Training Dynamics
+The following graph illustrates the evolution of reward signals and the selection ratio during training.
+
+<p align="center">
+  <img src="./images/average_across_folds_only.png" width="80%" alt="Training Dynamics">
+</p>
+
+> **Fig 2.** Temporal dynamics of multi-objective rewards and selection ratio. The learned policy consistently accepts approximately 55% of synthetic candidates on average. A three-phase pattern emerges: (1) **Utility ($r_U$)-driven expansion**, (2) **Diversity ($r_D$)-driven coverage**, and (3) **Fidelity/Alignment ($r_F, r_A$)-constrained stabilization**, resulting in a robust selection policy. 
+
+### 3. Comparison of selection strategies
 <p align="center">
   <img src="./images/Table2.png" width="90%" alt="Performance across selection methods.">
 </p>
@@ -77,28 +87,32 @@ Our method outperforms representative GAN-based augmentation and RL-based select
 - Coverage: farthest-first dispersion in the embedding space, prone to outliers.
 - Centroid: cluster then keep medoids, sensitive to k and cluster stability.
 - Realism: rank by discriminator-based $r_F$, high fidelity at potential cost of diversity.
----
+- Ours: PPO-based multi-objective policy optimizing a balanced trade-off among fidelity, diversity, alignment, and downstream utility.
 
-### 2. Ablation Studies & Analysis
+
+## Ablation Studies & Analysis
 To validate the effectiveness of our proposed components, we conducted extensive ablation studies.
 
-#### Impact of Reward Components & Selection Strategy
-We analyzed the contribution of each reward objective ($r_F, r_D, r_A, r_U$) and compared our policy against heuristic selection strategies (Random, Coverage, Centroid, Fidelity).
+### 1. Impact of Reward Components
+We analyzed the contribution of each reward objective ($r_F, r_D, r_A, r_U$).
 
 <p align="center">
   <img src="./images/Table3.png" width="48%" alt="Ablation Study on Rewards">
 </p>
 
-> **Table 3:** Ablation study on the contribution of each reward component. Removing any single objective leads to performance degradation, confirming the necessity of the multi-objective framework[cite: 156, 171].
+> **Table 3:** Ablation study on the contribution of each reward component. Removing any single objective leads to performance degradation, confirming the necessity of the multi-objective framework.
 
-#### Impact of Scalarization Strategy
-We further investigated the effect of reward scalarization weights on the agent's learning.
+### 2. Impact of Scalarization Strategy
+We investigated the effect of reward scalarization strategies.
 
 <p align="center">
   <img src="./images/Table4.png" width="60%" alt="Scalarization Strategy">
 </p>
 
 > **Table 4.** Uniform linear scalarization(lambda_{all}=1.0) reduces F1 by 1.8% and doubles variance(std 2.45 to 4.85), as dense structural rewards(r_F,r_A) overshadow sparse utility reward(r_U), biasing optimization toward easier objectives. Prioritizing primary targets(lambda=1.0) over regularizers(lambda=0.5) balances learning, achieving the highest Accuracy(67.71%) and Stability(std: 1.04).
+
+### 3. Impact of PPO
+We further evaluate the impact of using a learned PPO-based policy for candidate selection, compared to a context-unaware static scoring baseline. 
 
 <p align="center">
   <img src="./images/Table5.png" width="60%" alt="Static Scoring">
@@ -108,11 +122,4 @@ We further investigated the effect of reward scalarization weights on the agent'
 
 ---
 
-### 3. Training Dynamics
-The following graph illustrates the evolution of reward signals and the selection ratio during training.
 
-<p align="center">
-  <img src="./images/average_across_folds_only.png" width="80%" alt="Training Dynamics">
-</p>
-
-> **Fig 2.** Temporal dynamics of multi-objective rewards and selection ratio. [cite_start]A three-phase pattern emerges: (1) **Utility ($r_U$)-driven expansion**, (2) **Diversity ($r_D$)-driven coverage**, and (3) **Fidelity/Alignment ($r_F, r_A$)-constrained stabilization**, resulting in a robust selection policy.
