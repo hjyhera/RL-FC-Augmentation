@@ -6,8 +6,7 @@ Functional connectivity (FC) derived from resting-state fMRI provides promising 
 However, limited and noisy annotations make deep diagnostic models highly brittle.    
 While generative augmentation can alleviate data scarcity, uncontrolled synthetic samples often introduce biologically implausible artifacts.  
 
-To address this, we propose a reinforcement learning–based synthetic data filtering framework that curates synthetic FC samples using   
-**multi-objective rewards**, balancing fidelity, diversity, alignment, and diagnostic utility.
+To address this, we propose a reinforcement learning–based synthetic data filtering framework that curates synthetic FC samples using **multi-objective rewards**, balancing fidelity, diversity, alignment, and diagnostic utility.
 
 ## 📋 Overview
 <p align="center">
@@ -125,8 +124,7 @@ We further evaluate the impact of using a learned PPO-based policy for candidate
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/yourusername/yourrepo.git
-cd yourrepo
+git clone https://github.com/hjyhera/Reinforcement-Learning-with-Multi-Objective-Rewards-for-Functional-Connectivity-Augmentation.git
 ```
 
 ### 2. Create Environment
