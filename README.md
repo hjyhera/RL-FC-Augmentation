@@ -4,7 +4,8 @@
 <p align="center">
   <img src="./images/overview.jpg" width="90%" alt="Overview>
 </p>
-> **Overview.** This figure presented in the overview comprises four stages: (A) iterative candidate selection guided by a multi-objective reward, (B) agent training of the PPO, (C) classifier training on curated augmentations, and (D) inference on new subjects.
+    
+> **Fig 1.**  This figure presented in the overview comprises four stages: (A) iterative candidate selection guided by a multi-objective reward, (B) agent training of the PPO, (C) classifier training on curated augmentations, and (D) inference on new subjects.
 
 
 
