@@ -3,7 +3,9 @@
 ## 🔥 Motivation
 
 Functional connectivity (FC) derived from resting-state fMRI provides promising biomarkers for Major Depressive Disorder (MDD).
+
 However, limited and noisy annotations make deep diagnostic models highly brittle.  
+
 While generative augmentation can alleviate data scarcity, uncontrolled synthetic samples often introduce biologically implausible artifacts.
 
 To address this, we propose a reinforcement learning–based synthetic data filtering framework that curates synthetic FC samples using **multi-objective rewards**, balancing fidelity, diversity, alignment, and diagnostic utility.
@@ -13,7 +15,8 @@ To address this, we propose a reinforcement learning–based synthetic data filt
   <img src="./images/overview.jpg" width="90%" alt="Overview">
 </p>
     
-> **Fig 1.**  Our framework operates in four stages (Fig.1):
+> **Fig 1.**
+> Our framework operates in four stages:
 
 - **Candidate Generation:** Pretrain a GAN to synthesize FC candidates  
 - **RL-based Selection:** A PPO agent filters candidates under multi-objective rewards  
