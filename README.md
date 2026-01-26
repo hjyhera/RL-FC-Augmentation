@@ -6,7 +6,8 @@ Functional connectivity (FC) derived from resting-state fMRI provides promising 
 However, limited and noisy annotations make deep diagnostic models highly brittle.    
 While generative augmentation can alleviate data scarcity, uncontrolled synthetic samples often introduce biologically implausible artifacts.  
 
-To address this, we propose a reinforcement learning–based synthetic data filtering framework that curates synthetic FC samples using **multi-objective rewards**, balancing fidelity, diversity, alignment, and diagnostic utility.
+To address this, we propose a reinforcement learning–based synthetic data filtering framework that curates synthetic FC samples using 
+**multi-objective rewards**, balancing fidelity, diversity, alignment, and diagnostic utility.
 
 ## 📋 Overview
 <p align="center">
@@ -25,9 +26,9 @@ To address this, we propose a reinforcement learning–based synthetic data filt
 
 We define a vector-valued reward:
 
-\[
-r($s_t$,$a_t$) = [$r_F$, $r_D$, $r_A$, $r_U$]
-\]
+
+r($s_t$, $a_t$) = ( $r_F$, $r_D$, $r_A$, $r_U$)
+
 
 - **Fidelity ($r_F$):** discriminator realism score  
 - **Diversity ($r_D$):** encourages coverage and prevents mode collapse  
@@ -57,21 +58,25 @@ We introduce an analysis framework that quantifies **selection dynamics** throug
 
 We evaluated our framework on the **REST-meta-MDD** dataset using a 5-fold cross-validation scheme. The results demonstrate that our multi-objective RL agent consistently selects high-quality synthetic samples that improve downstream diagnostic performance.
 
-### 1. Comparison with State-of-the-Art Methods
+### 1. Comparison with GAN-based augmentation and RL-based selection approaches
 Our method outperforms representative GAN-based augmentation and RL-based selection baselines across all metrics (Accuracy, Sensitivity, Specificity, and F1-score).
 
 <p align="center">
-  <img src="./images/Table1.png" width="90%" alt="Comparison with SOTA">
+  <img src="./images/Table1.png" width="90%" alt="Comparison with baselines">
 </p>
 
-> **Table 1.** Classification performance comparison. Our method achieves the highest accuracy (**67.71%**) and F1-score (**69.18%**), significantly surpassing the no-augmentation baseline and other competitive methods.
+> **Table 1.** Classification performance comparison. Our method achieves the highest accuracy (**67.71%**), sensitivity (**70.00%**), specificity (**65.22**) and F1-score (**69.18%**), significantly surpassing the no-augmentation baseline and other competitive methods.
 
+### 2. Comparison of selection strategies
 <p align="center">
   <img src="./images/Table2.png" width="90%" alt="Performance across selection methods.">
 </p>
 
-> **Table 1.** Performance across selection methods.
-
+> **Table 2.** We investigated downstream effects of candidate selection under a fixed acceptance budget of approximately 55%.
+- Random: uniform, structure-agnostic baseline.
+- Coverage: farthest-first dispersion in the embedding space, prone to outliers.
+- Centroid: cluster then keep medoids, sensitive to k and cluster stability.
+- Realism: rank by discriminator-based $r_F$, high fidelity at potential cost of diversity.
 ---
 
 ### 2. Ablation Studies & Analysis
