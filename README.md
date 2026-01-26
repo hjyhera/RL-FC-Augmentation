@@ -62,7 +62,7 @@ The results demonstrate that our multi-objective RL agent consistently selects h
 Our method outperforms representative GAN-based augmentation and RL-based selection baselines across all metrics (Accuracy, Sensitivity, Specificity, and F1-score).
 
 <p align="center">
-  <img src="./images/Table1.png" width="90%" alt="Comparison with baselines">
+  <img src="./images/Table1.png" width="60%" alt="Comparison with baselines">
 </p>
 
 > **Table 1.** Classification performance comparison. Our method achieves the highest accuracy (**67.71%**), sensitivity (**70.00%**), specificity (**65.22%**) and F1-score (**69.18%**), significantly surpassing the no-augmentation baseline and other competitive methods.
@@ -71,14 +71,14 @@ Our method outperforms representative GAN-based augmentation and RL-based select
 The following graph illustrates the evolution of reward signals and the selection ratio during training.
 
 <p align="center">
-  <img src="./images/average_across_folds_only.png" width="80%" alt="Training Dynamics">
+  <img src="./images/average_across_folds_only.png" width="60%" alt="Training Dynamics">
 </p>
 
 > **Fig 2.** Temporal dynamics of multi-objective rewards and selection ratio. The learned policy consistently accepts approximately 55% of synthetic candidates on average. A three-phase pattern emerges: (1) **Utility ($r_U$)-driven expansion**, (2) **Diversity ($r_D$)-driven coverage**, and (3) **Fidelity/Alignment ($r_F, r_A$)-constrained stabilization**, resulting in a robust selection policy. 
 
 ### 3. Comparison of Selection Strategies
 <p align="center">
-  <img src="./images/Table2.png" width="90%" alt="Performance across selection methods.">
+  <img src="./images/Table2.png" width="60%" alt="Performance across selection methods.">
 </p>
 
 > **Table 2.** We investigated downstream effects of candidate selection under a fixed acceptance budget of approximately 55%.
@@ -96,7 +96,7 @@ To validate the effectiveness of our proposed components, we conducted extensive
 We analyzed the contribution of each reward objective ($r_F, r_D, r_A, r_U$).
 
 <p align="center">
-  <img src="./images/Table3.png" width="48%" alt="Ablation Study on Rewards">
+  <img src="./images/Table3.png" width="60%" alt="Ablation Study on Rewards">
 </p>
 
 > **Table 3:** Ablation study on the contribution of each reward component. Removing any single objective leads to performance degradation, confirming the necessity of the multi-objective framework.
@@ -128,6 +128,7 @@ git clone https://github.com/hjyhera/Reinforcement-Learning-with-Multi-Objective
 ```
 
 ### 2. Create Environment
+We recommend using a conda environment:
 
 ```bash
 conda create -n py39 python=3.9
@@ -150,7 +151,7 @@ First, train the FC generator to synthesize candidate samples:
 Train the PPO agent with multi-objective rewards:
 
 ```bash
-
+python train_mp_light_optimized.py
 ```
 
 
