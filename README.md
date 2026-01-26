@@ -50,8 +50,7 @@ We introduce an analysis framework that quantifies **selection dynamics** throug
 - Subjects: 249 MDD / 228 Normal Controls  
 - Parcellation: Harvard-Oxford Atlas (112 ROIs)  
 - FC Construction: Pearson correlation + Fisher z-transform  
-- Evaluation: Subject-disjoint 5-fold cross-validation  
-
+- Evaluation: Subject-disjoint 5-fold cross-validation
 
 ## 📊 Results
 
@@ -102,7 +101,7 @@ We analyzed the contribution of each reward objective ($r_F, r_D, r_A, r_U$).
 > **Table 3:** Ablation study on the contribution of each reward component. Removing any single objective leads to performance degradation, confirming the necessity of the multi-objective framework.
 
 ### 2. Impact of Scalarization Strategy
-We investigated the effect of reward scalarization strategies.
+We investigated the effect of reward scalarization strategies: uniform vs. tuned weights.
 
 <p align="center">
   <img src="./images/Table4.png" width="60%" alt="Scalarization Strategy">
@@ -119,7 +118,37 @@ We further evaluate the impact of using a learned PPO-based policy for candidate
 
 > **Table 5.** Compared to a context-unaware "Static Scoring" baseline(selecting features independently), our RL framework improved F1 by 3.1%. The agent analyzes functional connectivity(s_t) to identify redundancy, mitigating mode collapse and ensuring diversity crucial for robust diagnostic generalization. 
 
-## ⚙️ Installation & Usage
+## ⚙️ Implementation Details
+
+### 1. Computational Resources
+All experiments were conducted on a workstation equipped with:
+
+- GPU: NVIDIA RTX 3090 (24GB)
+- Framework: Python 3.9, PyTorch 2.0 
+- Training time: approx. 12 hours on a single RTX 3090
+
+### 2. PPO Training Hyperparameters
+
+The PPO-based selection agent was trained with the following configuration:
+
+- **Policy network:** 2-layer MLP (hidden dim = 256)
+- **AdamW Learning rate:** 3e-4  
+- **Discount factor ($\gamma$):** 0.99   
+- **Clip range ($\epsilon$):** 0.5  
+- **Entropy coefficient:** 0.5  
+- **Batch size:** 256  
+- **Training steps:** 1M timesteps  
+
+### 3. Classifier Hyperparameters
+
+The classifier was trained with the following configuration:
+
+- **Classifier network:** 3-layer MLP (hidden dim = 256)
+- **Learning rate:** 1e-4
+- **Batch size:** 256
+- **Training steps:** 200 epochs
+  
+## 🔧 Installation & Usage
 
 ### 1. Clone the Repository
 
