@@ -2,7 +2,7 @@
 
 ## 📋 Overview
 <p align="center">
-  <img src="./images/overview.jpg" width="90%" alt="Overview>
+  <img src="./images/overview.jpg" width="90%" alt="Overview">
 </p>
     
 > **Fig 1.**  This figure presented in the overview comprises four stages: (A) iterative candidate selection guided by a multi-objective reward, (B) agent training of the PPO, (C) classifier training on curated augmentations, and (D) inference on new subjects.
@@ -20,7 +20,7 @@ Our method outperforms representative GAN-based augmentation and RL-based select
   <img src="./images/Table1.png" width="90%" alt="Comparison with SOTA">
 </p>
 
-> **Table 1.** Classification performance comparison. [cite_start]Our method achieves the highest accuracy (**67.71%**) and F1-score (**69.18%**), significantly surpassing the no-augmentation baseline and other competitive methods[cite: 8, 135].
+> **Table 1.** Classification performance comparison. Our method achieves the highest accuracy (**67.71%**) and F1-score (**69.18%**), significantly surpassing the no-augmentation baseline and other competitive methods.
 
 <p align="center">
   <img src="./images/Table2.png" width="90%" alt="Performance across selection methods.">
@@ -40,7 +40,7 @@ We analyzed the contribution of each reward objective ($r_F, r_D, r_A, r_U$) and
   <img src="./images/Table3.png" width="48%" alt="Ablation Study on Rewards">
 </p>
 
-> **Left (Table 3):** Ablation study on the contribution of each reward component. Removing any single objective leads to performance degradation, confirming the necessity of the multi-objective framework[cite: 156, 171].
+> **Table 3:** Ablation study on the contribution of each reward component. Removing any single objective leads to performance degradation, confirming the necessity of the multi-objective framework[cite: 156, 171].
 
 #### Impact of Scalarization Strategy
 We further investigated the effect of reward scalarization weights on the agent's learning.
