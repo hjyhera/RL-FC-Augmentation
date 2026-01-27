@@ -162,7 +162,7 @@ git clone https://github.com/hjyhera/RL-FC-Augmentation.git
 ```
 
 ### 2. Create Environment
-We recommend using a conda environment:
+We recommend using a conda environment.
 
 ```bash
 conda create -n py39 python=3.9
@@ -175,14 +175,19 @@ pip install -r requirements.txt
 ```
 
 ### 4. Train the Generator (GAN)
-First, train the FC generator to synthesize candidate samples:
+First, train the FC generator to synthesize candidate samples.
+We follow the official implementation of **GC-GAN** to train the FC generator and synthesize candidate samples:
+
+Oh, J.-H., et al.  
+*Graph-based Conditional Generative Adversarial Networks for Major Depressive Disorder Diagnosis with Synthetic Functional Brain Network Generation.*  
+IEEE Journal of Biomedical and Health Informatics, 28(3), 1504–1515, 2023.
 
 ```bash
 python gcgan_data_augmentation.py
 ```
 
 ### 5. Train the PPO Selection Agent
-Train the PPO agent with multi-objective rewards:
+Train the PPO agent with multi-objective rewards.
 
 ```bash
 python train_cycle_mp_light_optimized.py
