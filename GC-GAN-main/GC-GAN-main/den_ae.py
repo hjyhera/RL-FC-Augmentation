@@ -1,0 +1,216 @@
+import os
+import time
+import glob
+import torch
+import torch.nn as nn
+import matplotlib
+matplotlib.use('Agg') 
+import matplotlib.pyplot as plt
+import numpy as np
+import seaborn as sns
+
+from config import config
+from seed import set_seed
+from load_data import load_data_list, load_graph_data
+from model import myGraphAE
+from utils import weights_init
+
+
+# set hyper parameter
+args = config()
+timestamp = args.timestamp
+set_seed()
+
+def add_noise(data, noise_factor=0.001): # 표준편차가 noise_factor에 의해 결정됨. 표준편차를 0.001으로 만든다.
+    noise = noise_factor * torch.randn_like(data) # data와 동일한 크기를 가진 텐서 생성. 이 텐서의 모든 원소는 평균 0, 표준편차 1인 정규분포에서 무작위로 샘플링됨.
+    return data + noise
+
+def train_ae(fold):
+
+    genlr = args.genlr
+    g_weight_decay = args.g_weight_decay
+    batch_size = args.gan_batch_size
+
+    # model declaration
+    generator = myGraphAE()
+    if torch.cuda.is_available():
+        generator.to(args.device)
+
+    # weight initialization - default xavier uniform
+    generator.apply(weights_init)
+
+    # save log
+    if not (os.path.isdir('GraphAE/Results/model{}'.format(args.timestamp))):
+        os.makedirs(os.path.join('GraphAE/Results/model{}'.format(args.timestamp)))
+    path_save_info = 'GraphAE/Results/model{}'.format(args.timestamp) + os.path.sep + "train_info{}_{}.csv".format(args.timestamp, fold)
+    with open(path_save_info, "w") as f:
+        f.write("G_loss\n")
+    with open(path_save_info.replace(".csv", "_test.csv"), "w") as f:
+        f.write("G_loss\n")
+
+    # optimizer
+    if args.optim == "ADAM":
+        print("current optimizer : ADAM")
+        optimizer_g = torch.optim.Adam(generator.parameters(), lr=genlr, weight_decay=g_weight_decay, betas=args.betas)
+
+    scheduler_g= torch.optim.lr_scheduler.ExponentialLR(optimizer_g, gamma=args.gamma)
+
+    # sample loss function
+    mse_loss = nn.MSELoss()
+
+    # save parameter log
+    with open(path_save_info.replace(".csv", ".txt"), "w") as f:
+            f.write('Generator: {}\n\n Parameters : {}\n\n Optimizer G : {}\n\n Scheduler G {} : {}\n\n'.format \
+                    (str(myGraphAE),args.Return_args(),optimizer_g,scheduler_g,scheduler_g.state_dict()))
+
+    train_log = "##### Training start! ###### \t timestamp: {} \t fold : {} \t".format(args.timestamp, fold)
+    print(train_log)
+
+    train_filenames = load_data_list(fold=fold, data_type="train")
+    step_size = (len(train_filenames) // batch_size)
+
+    for epoch in range(1000):
+        epoch_time = time.time()
+        step_loss_g = [];
+
+        generator.train()
+
+        np.random.shuffle(train_filenames)  # shuffle train files
+
+        for step in range(step_size + 1):
+            if step == (step_size):
+                final_batch = len(train_filenames) - (step_size) * batch_size
+                batch_mask = range(step * batch_size, (step * batch_size) + final_batch)
+            else:
+                batch_mask = range(step * batch_size, (step + 1) * batch_size)
+            # load train data
+
+            [train_data, train_edge, train_label] = load_graph_data(fold=fold, data_filenames=train_filenames[batch_mask],data_type="train")
+            real_x = torch.FloatTensor(train_data).to(args.device)
+            real_edge_index = torch.LongTensor(train_edge).to(args.device)
+            real_label = torch.LongTensor(train_label).to(args.device)
+
+            noisy_x = add_noise(real_x, noise_factor=0.1)
+
+            # training generator
+            optimizer_g.zero_grad()
+            generated = generator(noisy_x, real_edge_index, real_label)
+            loss_recon = mse_loss(generated,real_x)
+            loss_g = 10 * loss_recon
+            loss_g.backward()
+
+            optimizer_g.step()
+            scheduler_g.step()
+
+            step_loss_g.append(loss_g.item())
+
+        G_loss = sum(step_loss_g) / step_size  # generator loss
+
+        print("[Train] [Epoch:{}/{}] [Time:{:.1f}] [Loss G:{:.4f}]".format(epoch + 1,1000, time.time()-epoch_time,G_loss))
+
+        with open(path_save_info, "a") as f:
+            f.write('{}\n'.format(G_loss))
+
+        model_save_path = 'GraphAE/Model/model{}/'.format(args.timestamp)
+        if args.model_checkpoint != 0 and (epoch + 1) % args.model_checkpoint == 0:
+            print("checkpoint saving..")
+            if not (os.path.isdir(model_save_path)):
+                os.makedirs(model_save_path)
+            model_name_G = model_save_path + 'GAE_model_{}_{:04}.pth'.format(fold, epoch + 1)
+            torch.save(generator.state_dict(), model_name_G)
+
+            test_result = test(fold, epoch)
+            with open(path_save_info.replace(".csv", "_test.csv"), "a") as f:
+                log = ",".join([str(test_result[key]) for key in test_result.keys()]) + "\n"
+                f.write(log)
+
+    torch.save(generator.state_dict(), model_save_path + 'GAE_model_{}_final.pth'.format(fold))
+
+    files = glob.glob(model_save_path + '*.pth')
+    for f in files:
+        if 'final' not in f:
+            os.remove(f)  # except final model
+
+    print("[!!] Training finished\n\n")
+
+    return args.timestamp
+
+def test(fold, epoch):
+
+    # model declaration
+    generator = myGraphAE()
+    if torch.cuda.is_available():
+        generator.to(args.device)
+
+    # load test model
+    generator.load_state_dict(torch.load('GraphAE/Model/model{}/GAE_model_{}_{:04}.pth'.format(args.timestamp, fold, epoch + 1)))
+    generator.eval()
+
+    # sample loss function
+    mse_loss = nn.MSELoss()
+
+    # load test data
+    test_filenames = load_data_list(fold = fold, data_type = "test")
+    [test_data, test_edge, test_label] = load_graph_data(fold = fold, data_filenames = test_filenames,data_type="test")
+    test_x = torch.FloatTensor(test_data).to(args.device)
+    test_edge_index = torch.LongTensor(test_edge).to(args.device)
+    test_label = torch.LongTensor(test_label).to(args.device)
+
+    epoch_time = time.time()
+
+    total_info = {}
+    eval_list = ['loss']
+
+    recon_img = generator(test_x,test_edge_index, test_label)
+    test_loss_g = mse_loss(recon_img,test_x)
+
+    recon_img = recon_img.cpu().detach().numpy()
+
+    for n in range(len(test_filenames)):
+        if n < 10:
+            fig, ax = plt.subplots(figsize=(6, 5))
+            sns.heatmap(recon_img[n], ax=ax, annot=False, fmt='.2f',
+                        linewidths=0, cmap='jet', cbar=True,
+                        xticklabels=False, yticklabels=False)
+            ax.set_title(f'Generated FC matrix fold{fold}')
+            fig.tight_layout()
+            fig.savefig(f'GraphAE/Results/model{args.timestamp}/generated_fold{fold}_no{n+1}.png')
+            plt.close(fig)
+
+        if n == 0:
+            mean_generated = recon_img[n]
+        else:
+            mean_generated = np.add(mean_generated, recon_img[n])
+    mean_generated = mean_generated / len(test_filenames)
+
+    fig, ax = plt.subplots(figsize=(6, 5))
+    sns.heatmap(mean_generated, ax=ax, annot=False, fmt='.2f',
+                linewidths=0, cmap='jet', cbar=True,
+                xticklabels=False, yticklabels=False, vmin=-0.1, vmax=1.5)
+    ax.set_title(f'Mean generated FC matrix fold{fold}')
+    fig.tight_layout()
+    fig.savefig(f'GraphAE/Results/model{args.timestamp}/mean_generated_fold{fold}.png')
+    plt.close(fig)
+
+
+    total_info['loss'] = test_loss_g.item()
+
+
+    log = "[Test] time [{:.1f}s]".format(time.time() - epoch_time) + \
+              " | loss [{:.3}]".format(total_info['loss'])
+    print(log)
+
+    out = {}
+    for key in eval_list:
+        out[key] = total_info[key]
+
+    return out
+
+
+if __name__ == "__main__":
+    for fold in range(1,6):
+        train_ae(fold)
+        # test(fold)
+
+
+
