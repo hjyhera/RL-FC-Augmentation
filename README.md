@@ -158,7 +158,7 @@ The classifier was trained with the following configuration:
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/hjyhera/Reinforcement-Learning-with-Multi-Objective-Rewards-for-Functional-Connectivity-Augmentation.git
+git clone https://github.com/hjyhera/RL-FC-Augmentation.git
 ```
 
 ### 2. Create Environment
@@ -178,7 +178,7 @@ pip install -r requirements.txt
 First, train the FC generator to synthesize candidate samples:
 
 ```bash
-
+python gcgan_data_augmentation.py
 ```
 
 ### 5. Train the PPO Selection Agent
