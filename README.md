@@ -47,6 +47,12 @@ We introduce an analysis framework that quantifies **selection dynamics** throug
 ## 📂 Dataset & Experimental Setup
 
 - Dataset: REST-meta-MDD
+```bash
+Yan, C. G., Wang, X., Zuo, X. N., & Zang, Y. F. (2016). DPABI: Data Processing & Analysis for (Resting-State) Brain Imaging. 
+Neuroinformatics, 14(3), 339-351. https://doi.org/10.1007/s12021-016-9312-x
+
+REST-meta-MDD Project: https://rfmri.org/REST-meta-MDD
+```
 - Subjects: 249 MDD / 228 Normal Controls  
 - Parcellation: Harvard-Oxford Atlas (112 ROIs)  
 - FC Construction: Pearson correlation + Fisher z-transform  
@@ -182,5 +188,48 @@ Train the PPO agent with multi-objective rewards:
 ```bash
 python train_cycle_mp_light_optimized.py
 ```
+
+## 📄 License
+
+This project is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License  
+(**CC BY-NC-SA 4.0**).
+
+- You are free to share and adapt the material for **non-commercial** purposes.
+- Proper attribution must be given.
+- Any derivative work must be distributed under the same license.
+
+For details, see: https://creativecommons.org/licenses/by-nc-sa/4.0/
+
+## 🙏 Acknowledgements
+
+This work was supported by the Ministry of Science and ICT (MSIT), Korea,  
+through the Institute of Information & Communications Technology Planning & Evaluation (IITP)  
+[Artificial Intelligence Graduate School Program at Korea University, No. RS-2019-II190079;  
+Development of AI Autonomy and Knowledge Enhancement for AI Agent Collaboration, No. 2022-0-00871],  
+the National Research Foundation of Korea (NRF) [No. RS-2023-00212498],  
+and the Korea Health Industry Development Institute (KHIDI)  
+under the Federated Learning-based Drug Discovery Acceleration Project (K-MELLODDY)  
+[No. RS-2025-16066488].
+
+## 📬 Contact
+
+For questions, discussions, or collaborations, feel free to contact:
+
+**Jiyoung Hwang**  
+Korea University  
+Email: hjyhera@korea.ac.kr  
+GitHub: https://github.com/hjyhera
+
+## 📌 Citation
+
+If you find this work useful, please cite our paper:
+
+```bibtex
+@inproceedings{hwang2026rlfc,
+  title     = {Reinforcement Learning with Multi-Objective Rewards for Functional Connectivity Augmentation},
+  author    = {Hwang, Jiyoung and others},
+  booktitle = {Proceedings of ICASSP 2026},
+  year      = {2026}
+}
 
 
