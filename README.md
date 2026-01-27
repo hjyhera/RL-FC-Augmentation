@@ -175,12 +175,14 @@ pip install -r requirements.txt
 ```
 
 ### 4. Train the Generator (GAN)
-First, train the FC generator to synthesize candidate samples.
+First, train the FC generator to synthesize candidate samples.  
 We follow the official implementation of **GC-GAN** to train the FC generator and synthesize candidate samples:
 
+```bash
 Oh, J.-H., et al.  
 *Graph-based Conditional Generative Adversarial Networks for Major Depressive Disorder Diagnosis with Synthetic Functional Brain Network Generation.*  
 IEEE Journal of Biomedical and Health Informatics, 28(3), 1504–1515, 2023.
+```
 
 ```bash
 python gcgan_data_augmentation.py
