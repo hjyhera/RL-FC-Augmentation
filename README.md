@@ -225,11 +225,13 @@ GitHub: https://github.com/hjyhera
 If you find this work useful, please cite our paper:
 
 ```bibtex
-@inproceedings{hwang2026rlfc,
-  title     = {Reinforcement Learning with Multi-Objective Rewards for Functional Connectivity Augmentation},
-  author    = {Hwang, Jiyoung and others},
-  booktitle = {Proceedings of ICASSP 2026},
-  year      = {2026}
+@inproceedings{Ji2025speech,
+  title={REINFORCEMENT LEARNING WITH MULTI-OBJECTIVE REWARDS FOR FUNCTIONAL CONNECTIVITY AUGMENTATION},
+  author={Chang-Hoon Ji, Ji-young Hwang, Ji-hye Oh, Yu-Kyum Kang, Su-Yeon Kwak, Ji-Wung Han, Tae-eui Kam},
+  booktitle={ICASSP 2026-2026 IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP)},
+  pages={1--5},
+  year={2026},
+  organization={IEEE}
 }
 
 
