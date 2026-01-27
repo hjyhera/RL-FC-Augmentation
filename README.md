@@ -216,7 +216,7 @@ under the Federated Learning-based Drug Discovery Acceleration Project (K-MELLOD
 For questions, discussions, or collaborations, feel free to contact:
 
 **Jiyoung Hwang**  
-Korea University  
+Korea University, Department of Artifical Intellgence 
 Email: hjyhera@korea.ac.kr  
 GitHub: https://github.com/hjyhera
 
