@@ -27,9 +27,7 @@ We define a vector-valued reward:
 
 
 r($s_t$, $a_t$) = ( $r_F$, $r_D$, $r_A$, $r_U$)
-$$
-r(s_t, a_t) = [r_F,\; r_D,\; r_A,\; r_U]^\top
-$$
+
 - **Fidelity ($r_F$):** discriminator realism score  
 - **Diversity ($r_D$):** encourages coverage and prevents mode collapse  
 - **Alignment ($r_A$):** preserves manifold structure via autoencoder reconstruction  
