@@ -202,14 +202,11 @@ For details, see: https://creativecommons.org/licenses/by-nc-sa/4.0/
 
 ## 🙏 Acknowledgements
 
-This work was supported by the Ministry of Science and ICT (MSIT), Korea,  
-through the Institute of Information & Communications Technology Planning & Evaluation (IITP)  
-[Artificial Intelligence Graduate School Program at Korea University, No. RS-2019-II190079;  
-Development of AI Autonomy and Knowledge Enhancement for AI Agent Collaboration, No. 2022-0-00871],  
-the National Research Foundation of Korea (NRF) [No. RS-2023-00212498],  
-and the Korea Health Industry Development Institute (KHIDI)  
-under the Federated Learning-based Drug Discovery Acceleration Project (K-MELLODDY)  
-[No. RS-2025-16066488].
+This work was supported by:
+
+- MSIT/IITP: RS-2019-II190079, 2022-0-00871
+- NRF: RS-2023-00212498
+- KHIDI: RS-2025-16066488 (K-MELLODDY)
 
 ## 📬 Contact
 
@@ -222,16 +219,8 @@ GitHub: https://github.com/hjyhera
 
 ## 📌 Citation
 
-If you find this work useful, please cite our paper:
+If you find this work useful, please cite our paper.  
+The BibTeX will be updated once the paper is officially published.
 
-```bibtex
-@inproceedings{Ji2025speech,
-  title={REINFORCEMENT LEARNING WITH MULTI-OBJECTIVE REWARDS FOR FUNCTIONAL CONNECTIVITY AUGMENTATION},
-  author={Chang-Hoon Ji, Ji-young Hwang, Ji-hye Oh, Yu-Kyum Kang, Su-Yeon Kwak, Ji-Wung Han, Tae-eui Kam},
-  booktitle={ICASSP 2026-2026 IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP)},
-  pages={1--5},
-  year={2026},
-  organization={IEEE}
-}
-```
+
 
