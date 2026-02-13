@@ -1,4 +1,3 @@
-# ========== 제외할 폴더들 ==========
 wandb/
 ablation_results/
 logs/
@@ -16,8 +15,10 @@ ppo_final/logs/
 classifier_aug_models/
 classifier_baseline_models/
 ppo_final/logs/
+MDD_Harvard_site20-20250107T050634Z-001/
+MS_MDD_Harvard_FC_fisher-20250107T100946Z-001/
 
-# 가상환경 폴더 (있다면)
+
 .venv/
 env/
 .conda/
@@ -25,7 +26,7 @@ env/
 # Jupyter checkpoints
 .ipynb_checkpoints/
 
-# 대용량 데이터/모델 파일 (필요하면 더 추가)
+
 *.npz
 *.pth
 *.pt
@@ -38,10 +39,8 @@ env/
 ablation_study.py
 check_compatibility.py
 check_gpu_compatibility.py
-dual_network.py
 info.py
 make_val_test.py
 mlp_aug_classifier.py
 train_cycle.py
-
 vis.py
