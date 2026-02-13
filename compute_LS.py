@@ -6,8 +6,8 @@ from load_gan_data import GANSyntheticDataset
 from ppo_config import get_ppo_config
 
 def gpu_LS(real,gen):
-    t_gen = gen # 텐서 
-    t_real = real # 텐서 
+    t_gen = gen 
+    t_real = real  
 
     dist_real = torch.cdist(t_real, t_real)  # ICD 1
     dist_real = torch.flatten(torch.tril(dist_real, diagonal=-1))  # remove repeats
