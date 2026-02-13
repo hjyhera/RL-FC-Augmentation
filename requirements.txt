@@ -134,7 +134,7 @@ triton==2.1.0
 typing-inspection==0.4.2
 typing_extensions==4.15.0
 urllib3==1.26.20
-wandb==0.24.0
+wandb==0.25.0
 wcwidth==0.2.5
 webencodings==0.5.1
 widgetsnbextension==3.6.0
