@@ -8,7 +8,6 @@ class BrainDataset(torch.utils.data.Dataset):
         with open(txt_file, 'r') as f:
             self.file_list = f.read().splitlines()
         self.data_dir = data_dir
-        # MDD와 NC 개수 세기
         self.mdd_count = sum(1 for file_name in self.file_list if file_name.split('-')[1] == "1")
         self.nc_count = len(self.file_list) - self.mdd_count
 
@@ -30,12 +29,12 @@ class BrainDataset(torch.utils.data.Dataset):
 
 
 if __name__ == "__main__":
-    data_dir= r"D:/intern_project_0830/MS_MDD_Harvard_FC_fisher-20250107T100946Z-001/MS_MDD_Harvard_FC_fisher"
-    txt_file = r"D:/intern_project_0830/MDD_Harvard_site20-20250107T050634Z-001/MDD_Harvard_site20/20210331151631_MDD_site20_group/MDD_train_data_list_fold_1.txt"
+    data_dir= r'/home/user/RL-FC-Augmentation/MS_MDD_Harvard_FC_fisher-20250107T100946Z-001/MS_MDD_Harvard_FC_fisher'
+    txt_file = r'/home/user/RL-FC-Augmentation/MDD_Harvard_site20-20250107T050634Z-001/MDD_Harvard_site20/20210331151631_MDD_site20_group/MDD_trainvalid_data_list_fold_1.txt'
     dataset = BrainDataset(txt_file, data_dir)
-    print(f"총 샘플 수: {len(dataset)}")
+    print(f"Total number of samples: {len(dataset)}")
     fc_data, label = dataset[0]
-    print("\n=== BrainDataset 첫 샘플 예시 ===")
+    print("\n=== First sample from BrainDataset ===")
     print(f"fc_data shape: {fc_data.shape}, dtype: {fc_data.dtype}, sample values: {fc_data[:10]}")
     print(f"label shape: {label.shape}, dtype: {label.dtype}, value(s): {label.flatten()[:10]}")
 
