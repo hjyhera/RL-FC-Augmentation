@@ -44,8 +44,8 @@ def parse_reward_components():
                     'base_quality': [],
                     'ratio_penalty': [],
                     'diversity_bonus': [],
-                    'disc_mean': [],
-                    'dcae_mean': [],
+                    'fidelity_mean': [],
+                    'alignment_mean': [],
                     'likeness_score': [],
                     'validation_reward': [],
                     'final_reward': []
@@ -64,8 +64,8 @@ def parse_reward_components():
                         components['base_quality'].append(comp.get('base_quality', 0.0))
                         components['ratio_penalty'].append(comp.get('ratio_penalty', 0.0))
                         components['diversity_bonus'].append(comp.get('diversity_bonus', 0.0))
-                        components['disc_mean'].append(comp.get('disc_mean', 0.0))
-                        components['dcae_mean'].append(comp.get('dcae_mean', 0.0))
+                        components['fidelity_mean'].append(comp.get('fidelity_mean', 0.0))
+                        components['alignment_mean'].append(comp.get('alignment_mean', 0.0))
                         components['likeness_score'].append(comp.get('likeness_score', 0.0))
                         # Use val_normalized instead of validation_reward (which is always 0)
                         components['validation_reward'].append(comp.get('val_normalized', 0.0))
@@ -112,14 +112,14 @@ def create_average_only_plot():
     
     # Modern color palette with better contrast
     colors = {
-        'disc_mean': '#2E86AB',         # Professional blue
-        'dcae_mean': '#A23B72',         # Deep magenta
+        'fidelity_mean': '#2E86AB',         # Professional blue
+        'alignment_mean': '#A23B72',         # Deep magenta
         'likeness_score': '#F18F01',    # Vibrant orange
         'validation_reward': '#C73E1D', # Strong red
     }
     
     # Calculate average components across all folds with normalization
-    component_names = ['disc_mean', 'dcae_mean', 'likeness_score', 'validation_reward']
+    component_names = ['fidelity_mean', 'alignment_mean', 'likeness_score', 'validation_reward']
     
     # Collect all data for global normalization
     all_data = {name: [] for name in component_names}
@@ -195,32 +195,32 @@ def create_average_only_plot():
     # Plot average components with enhanced smoothing
     window_size = max(15, len(all_episodes) // 20)  # Adaptive smoothing
     
-    disc_avg_smooth = smooth_data(avg_components['disc_mean'], window_size=window_size)
-    dcae_avg_smooth = smooth_data(avg_components['dcae_mean'], window_size=window_size)
+    fidelity_avg_smooth = smooth_data(avg_components['fidelity_mean'], window_size=window_size)
+    alignment_avg_smooth = smooth_data(avg_components['alignment_mean'], window_size=window_size)
     likeness_avg_smooth = smooth_data(avg_components['likeness_score'], window_size=window_size)
     validation_avg_smooth = smooth_data(avg_components['validation_reward'], window_size=window_size)
     sel_ratio_avg_smooth = smooth_data(avg_sel_ratios, window_size=window_size)
     
     # Plot reward components with confidence intervals
-    disc_std_smooth = smooth_data(std_components['disc_mean'], window_size=window_size)
-    dcae_std_smooth = smooth_data(std_components['dcae_mean'], window_size=window_size)
+    fidelity_std_smooth = smooth_data(std_components['fidelity_mean'], window_size=window_size)
+    alignment_std_smooth = smooth_data(std_components['alignment_mean'], window_size=window_size)
     likeness_std_smooth = smooth_data(std_components['likeness_score'], window_size=window_size)
     validation_std_smooth = smooth_data(std_components['validation_reward'], window_size=window_size)
     
     # Plot main lines with enhanced styling
-    ax.plot(all_episodes, disc_avg_smooth, color=colors['disc_mean'], 
+    ax.plot(all_episodes, fidelity_avg_smooth, color=colors['fidelity_mean'], 
             linewidth=5.0, label='$r_F$', alpha=0.9, zorder=3)
     ax.fill_between(all_episodes, 
-                   np.array(disc_avg_smooth) - np.array(disc_std_smooth),
-                   np.array(disc_avg_smooth) + np.array(disc_std_smooth),
-                   color=colors['disc_mean'], alpha=0.0, zorder=1)
+                   np.array(fidelity_avg_smooth) - np.array(fidelity_std_smooth),
+                   np.array(fidelity_avg_smooth) + np.array(fidelity_std_smooth),
+                   color=colors['fidelity_mean'], alpha=0.0, zorder=1)
     
-    ax.plot(all_episodes, dcae_avg_smooth, color=colors['dcae_mean'], 
+    ax.plot(all_episodes, alignment_avg_smooth, color=colors['alignment_mean'], 
             linewidth=7.0, label='$r_A$', alpha=0.9, zorder=3)
     ax.fill_between(all_episodes,
-                   np.array(dcae_avg_smooth) - np.array(dcae_std_smooth),
-                   np.array(dcae_avg_smooth) + np.array(dcae_std_smooth),
-                   color=colors['dcae_mean'], alpha=0.0, zorder=1)
+                   np.array(alignment_avg_smooth) - np.array(alignment_std_smooth),
+                   np.array(alignment_avg_smooth) + np.array(alignment_std_smooth),
+                   color=colors['alignment_mean'], alpha=0.0, zorder=1)
     
     ax.plot(all_episodes, likeness_avg_smooth, color=colors['likeness_score'], 
             linewidth=7.0, label='$r_D$', alpha=0.9, zorder=3)
@@ -282,8 +282,8 @@ def create_average_only_plot():
     # Add subtle title area with metrics summary
     if len(fold_data) > 1:
         final_metrics = {
-            'disc': disc_avg_smooth[-1] if len(disc_avg_smooth) > 0 else 0,
-            'dcae': dcae_avg_smooth[-1] if len(dcae_avg_smooth) > 0 else 0,
+            'fidelity': fidelity_avg_smooth[-1] if len(fidelity_avg_smooth) > 0 else 0,
+            'alignment': alignment_avg_smooth[-1] if len(alignment_avg_smooth) > 0 else 0,
             'likeness': likeness_avg_smooth[-1] if len(likeness_avg_smooth) > 0 else 0,
             'validation': validation_avg_smooth[-1] if len(validation_avg_smooth) > 0 else 0,
             'selection': sel_ratio_avg_smooth[-1] if len(sel_ratio_avg_smooth) > 0 else 0
@@ -291,7 +291,7 @@ def create_average_only_plot():
         
         # Add text box with final metrics
         textstr = f'Final Metrics (Ep {max_episodes}):\n'
-        textstr += f'$r_F$: {final_metrics["disc"]:.3f} | $r_A$: {final_metrics["dcae"]:.3f}\n'
+        textstr += f'$r_F$: {final_metrics["fidelity"]:.3f} | $r_A$: {final_metrics["alignment"]:.3f}\n'
         textstr += f'$r_D$: {final_metrics["likeness"]:.3f} | $r_U$: {final_metrics["validation"]:.3f}\n'
         textstr += f'$s_R$: {final_metrics["selection"]:.3f}'
         
