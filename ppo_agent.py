@@ -20,7 +20,6 @@ class PPO:
         self.adv_scale    = config.adv_scale
         self.temperature  = config.temperature
 
-        # === (옵션) 전역 EMA baseline (로그용/백업용) ===
         self.use_ema_baseline = getattr(config, "use_ema_baseline", True)
         self.baseline_beta    = getattr(config, "baseline_beta", 0.9)
         self.baseline_ema     = getattr(config, "baseline_init", 0.0)
