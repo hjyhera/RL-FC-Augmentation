@@ -66,23 +66,22 @@ def classifier(train_loader, val_loader, test_loader, config, save_path=None):
     X_val_scaled = scaler.transform(X_val)
     X_test_scaled = scaler.transform(X_test) if len(X_test) > 0 else X_test
 
-    # model - MLP for brain connectivity classification (simplified, no early stopping)
     model = MLPClassifier(
-        hidden_layer_sizes=(512, 256, 128),  # 3층 네트워크
+        hidden_layer_sizes=(512, 256, 128), 
         activation='tanh',
         solver='sgd',
-        alpha=0.001,                # L2 정규화
+        alpha=0.001,                # L2 regularization 
         batch_size='auto',
-        learning_rate='adaptive',   # 학습률 자동 조정
+        learning_rate='adaptive',   
         learning_rate_init=0.02,
-        max_iter=200,              # 500 → 200 (PPO early stopping에 의존)
+        max_iter=200,            
         shuffle=True,
         random_state=config.seed,
-        early_stopping=False,      # PPO level에서 조기 종료 처리
+        early_stopping=False,    
         tol=1e-4
     )
     
-    # Simple training without early stopping
+    # train
     print("Training MLP model...")
     model.fit(X_train_scaled, y_train)
     print(f"Training complete. Iterations: {model.n_iter_}, Loss: {model.loss_:.4f}")
