@@ -44,7 +44,7 @@ from ppo_config import PPOConfig, get_ppo_config
 from load_gan_data import GANSyntheticDataset
 import logging
 import math
-from dual_network_light import Actor, Critic  # 경량화 모델 사용
+from dual_network import Actor, Critic 
 import json
 
 
@@ -325,8 +325,6 @@ def compute_policy_score(mean_reward, stats, cfg, episode=0):
         reward_score = w_r * mean_reward * penalty_factor
     
     score = reward_score
-
-    # ---- Selection ratio 관련 보상 제거됨 ----
 
     # ---- 기존 규제 패널티들 (NaN 안전 처리) ----
     if kl is not None and kl > kl_hi:
