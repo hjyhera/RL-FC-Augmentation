@@ -18,7 +18,7 @@ def seed_rng(seed: int):
     torch.manual_seed(seed)
     torch.cuda.manual_seed_all(seed)
 
-    g = torch.Generator()   # CPU generator (DataLoader용)
+    g = torch.Generator()   
     g.manual_seed(seed)
     return g
 
@@ -63,11 +63,11 @@ class Environment:
         self.test_data = test_data
 
         # imm reward 가중치
-        self.alpha_disc = config.alpha_disc
-        self.alpha_dcae = config.alpha_dcae
-        self.alpha_ls = config.alpha_ls
+        self.alpha_fidelity = config.alpha_fidelity
+        self.alpha_alignment = config.alpha_alignment
+        self.alpha_diversity = config.alpha_diversity
 
-        self.disc_reward, self.dcae_reward = self._load_precomputed(config.precomputed_path)
+        self.fidelity_reward, self.alignment_reward = self._load_precomputed(config.precomputed_path)
 
         # 선택 기록
         self.selected_data    = {f: [] for f in synthetic_data.keys()}
@@ -75,10 +75,10 @@ class Environment:
 
         # shaping
         self.shaping = Shaping(
-            alpha_disc=self.alpha_disc,
-            alpha_dcae=self.alpha_dcae,
-            disc_reward=self.disc_reward,
-            dcae_reward=self.dcae_reward,
+            alpha_fidelity=self.alpha_fidelity,
+            alpha_alignment=self.alpha_alignment,
+            fidelity_reward=self.fidelity_reward,
+            alignment_reward=self.alignment_reward,
             a=config.a,
             frac=config.frac,
             q_lo=config.q_lo,
@@ -92,20 +92,20 @@ class Environment:
         # validation reward
         self.clf_every       = config.clf_every
         self.val_metric      = config.val_metric
-        self.alpha_val      = config.alpha_val
+        self.alpha_utility      = config.alpha_utility
         self.fold_steps      = {f: 0 for f in synthetic_data.keys()}
         self.last_val_reward = {f: 0.0 for f in synthetic_data.keys()}
 
     def _load_precomputed(self, path):
         npz = np.load(path, allow_pickle=True)
-        if "disc_good" in npz and "dcae_good" in npz:
-            disc = npz["disc_good"].item()
-            dcae = npz["dcae_good"].item()
+        if "fidelity_good" in npz and "alignment_good" in npz:
+            fidelity = npz["fidelity_good"].item()
+            alignment = npz["alignment_good"].item()
         else:
             raise KeyError(f"Precomputed file missing expected keys. Found: {list(npz.keys())}.")
-        disc = {int(f): np.asarray(v, dtype=np.float32) for f, v in disc.items()}
-        dcae = {int(f): np.asarray(v, dtype=np.float32) for f, v in dcae.items()}
-        return disc, dcae
+        fidelity = {int(f): np.asarray(v, dtype=np.float32) for f, v in fidelity.items()}
+        alignment = {int(f): np.asarray(v, dtype=np.float32) for f, v in alignment.items()}
+        return fidelity, alignment
 
     def _flat_to_mat(self, flat_vec: torch.Tensor) -> torch.Tensor:
         """
@@ -249,27 +249,27 @@ class Environment:
 
         # ====== Quality-weighted Immediate reward ======
         imm = 0.0
-        disc_mean = 0.0
-        dcae_mean = 0.0
+        fidelity_mean = 0.0
+        alignment_mean = 0.0
         
         if sel_idx and len(sel_idx) > 0:  
             try:
-                disc_vals = self.disc_reward[fold][sel_idx] 
-                dcae_vals = self.dcae_reward[fold][sel_idx]
+                fidelity_vals = self.fidelity_reward[fold][sel_idx] 
+                alignment_vals = self.alignment_reward[fold][sel_idx]
                 
                 # NaN 안전 평균 계산
-                if len(disc_vals) > 0:
-                    disc_mean = float(disc_vals.mean())
-                    if not math.isfinite(disc_mean):
-                        disc_mean = 0.0
+                if len(fidelity_vals) > 0:
+                    fidelity_mean = float(fidelity_vals.mean())
+                    if not math.isfinite(fidelity_mean):
+                        fidelity_mean = 0.0
                         
-                if len(dcae_vals) > 0:
-                    dcae_mean = float(dcae_vals.mean())
-                    if not math.isfinite(dcae_mean):
-                        dcae_mean = 0.0
+                if len(alignment_vals) > 0:
+                    alignment_mean = float(alignment_vals.mean())
+                    if not math.isfinite(alignment_mean):
+                        alignment_mean = 0.0
                 
                 # Quality-weighted reward with selection ratio penalty
-                base_quality = self.alpha_disc * disc_mean + self.alpha_dcae * dcae_mean
+                base_quality = self.alpha_fidelity * fidelity_mean + self.alpha_alignment * alignment_mean
                 
                 # Calculate selection ratio first
                 N_total = len(self.synthetic_data[fold])
@@ -284,7 +284,7 @@ class Environment:
                 diversity_bonus = 0.0
                 if len(sel_idx) > 1:
                     # 선택된 샘플들 간의 표준편차로 다양성 측정
-                    combined_scores = disc_vals + dcae_vals
+                    combined_scores = fidelity_vals + alignment_vals
                     diversity_bonus = float(combined_scores.std()) * 0.5
                 
                 imm = base_quality - ratio_penalty + diversity_bonus
@@ -292,8 +292,8 @@ class Environment:
             except (IndexError, RuntimeError) as e:
                 print(f"[WARNING] Error in immediate reward calculation: {e}")
                 imm = 0.0
-                disc_mean = 0.0
-                dcae_mean = 0.0
+                fidelity_mean = 0.0
+                alignment_mean = 0.0
         else:
             # 아무것도 선택하지 않을 때 큰 페널티
             imm = -5.0  # -2.0 → -5.0 (선택 안함에 대한 극강 페널티)
@@ -309,8 +309,8 @@ class Environment:
             'base_quality': base_quality if 'base_quality' in locals() else 0.0,
             'ratio_penalty': ratio_penalty if 'ratio_penalty' in locals() else 0.0,
             'diversity_bonus': diversity_bonus if 'diversity_bonus' in locals() else 0.0,
-            'disc_mean': disc_mean if 'disc_mean' in locals() else 0.0,
-            'dcae_mean': dcae_mean if 'dcae_mean' in locals() else 0.0
+            'fidelity_mean': fidelity_mean if 'fidelity_mean' in locals() else 0.0,
+            'alignment_mean': alignment_mean if 'alignment_mean' in locals() else 0.0
         }
 
         # selected synthetic set 구성 
@@ -406,7 +406,7 @@ class Environment:
         # val_reward: -5~+1 -> -1~+0.2
         val_normalized = val_reward_safe / 5.0
         
-        reward = shaped_normalized + self.alpha_ls * ls_normalized + self.alpha_val * val_normalized
+        reward = shaped_normalized + self.alpha_diversity * ls_normalized + self.alpha_utility * val_normalized
         
         # Update reward components with final values
         self.last_reward_components.update({
@@ -416,8 +416,8 @@ class Environment:
             'ls_normalized': ls_normalized,
             'val_normalized': val_normalized,
             'final_reward': reward,
-            'alpha_ls': self.alpha_ls,
-            'alpha_val': self.alpha_val
+            'alpha_diversity': self.alpha_diversity,
+            'alpha_utility': self.alpha_utility
         })
         
         # 최종 reward NaN 체크
@@ -438,8 +438,8 @@ class Environment:
             f"Fold{fold}/selection/k":          int(k),
             f"Fold{fold}/selection/ratio":      float(sel_ratio),
             f"Fold{fold}/reward/imm_raw":       float(imm),
-            f"Fold{fold}/reward/disc_mean":     float(disc_mean),
-            f"Fold{fold}/reward/dcae_mean":     float(dcae_mean),
+            f"Fold{fold}/reward/fidelity_mean":     float(fidelity_mean),
+            f"Fold{fold}/reward/alignment_mean":     float(alignment_mean),
             f"Fold{fold}/reward/total":         float(reward),
         }
         
