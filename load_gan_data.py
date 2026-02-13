@@ -3,8 +3,6 @@ import numpy as np
 import torch
 from torch.utils.data import TensorDataset, DataLoader, ConcatDataset
 
-data_dir_gan = r'D:\intern_project_final\ppo_final\GAN\Pseudo_data\model_20250830_103826'
-
 
 class GANSyntheticDataset(torch.utils.data.Dataset):
     def __init__(self, data_dir_gan, fold):
@@ -32,11 +30,13 @@ class GANSyntheticDataset(torch.utils.data.Dataset):
     def __getitem__(self, idx):
         return self.data[idx], self.labels[idx]
     
+    
 if __name__ == "__main__":
-    dataset = GANSyntheticDataset(data_dir_gan, fold=5)  
-    print(f"총 샘플 수: {len(dataset)}")
+    data_dir_gan = r'/home/user/RL-FC-Augmentation/GAN/Pseudo_data/model_20250830_103826'
+    dataset = GANSyntheticDataset(data_dir_gan, fold=1)  
+    print(f"Total number of samples: {len(dataset)}")
     fc_data, label = dataset[4]
-    print("\n=== GANSyntheticDataset 첫 샘플 예시 ===")
+    print("\n=== First sample from GANSyntheticDataset ===")
     print(f"fc_data shape: {fc_data.shape}, dtype: {fc_data.dtype}, sample values: {fc_data[:10]}")
     print(f"label shape: {label.shape}, dtype: {label.dtype}, value(s): {label.flatten()[:10]}")
 
