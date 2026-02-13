@@ -9,10 +9,10 @@ class Shaping:
     def __init__(
         self,
         *,
-        alpha_disc: float,
-        alpha_dcae: float,
-        disc_reward: Dict[int, np.ndarray],
-        dcae_reward: Dict[int, np.ndarray],
+        alpha_fidelity: float,
+        alpha_alignment: float,
+        fidelity_reward: Dict[int, np.ndarray],
+        alignment_reward: Dict[int, np.ndarray],
         a: float = 1.0,
         frac: float = 0.3,
         q_lo: float = 0.05,
@@ -21,10 +21,10 @@ class Shaping:
         clip_k: float = 1.0, # clip 할 때, std 앞에 곱하는 계수 
         eps: float = 1e-8,
     ):
-        self.alpha_disc = float(alpha_disc)
-        self.alpha_dcae = float(alpha_dcae)
-        self.disc_reward = disc_reward
-        self.dcae_reward = dcae_reward
+        self.alpha_fidelity = float(alpha_fidelity)
+        self.alpha_alignment = float(alpha_alignment)
+        self.fidelity_reward = fidelity_reward
+        self.alignment_reward = alignment_reward
 
         self.a = float(a)
         self.frac = float(frac)
@@ -38,7 +38,7 @@ class Shaping:
         self._cache: Dict[int, Dict[str, float]] = {}
 
     def _pool_for_fold(self, fold: int) -> torch.Tensor:
-        pool = self.alpha_disc * self.disc_reward[fold] + self.alpha_dcae * self.dcae_reward[fold]
+        pool = self.alpha_fidelity * self.fidelity_reward[fold] + self.alpha_alignment * self.alignment_reward[fold]
         return torch.as_tensor(pool, dtype=torch.float32)
 
     @torch.no_grad()
