@@ -171,9 +171,7 @@ def create_reward_components_plot():
         ax2.set_ylabel('Selection Ratio', color='black')
         ax2.tick_params(axis='y', labelcolor='black')
         ax2.set_ylim(0, 1)
-        
-        # Skip ratio penalty plotting
-        
+                
         # Add zero line for reference
         ax.axhline(y=0, color='gray', linestyle='-', alpha=0.3)
         
