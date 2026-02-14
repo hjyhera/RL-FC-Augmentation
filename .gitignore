@@ -42,5 +42,4 @@ check_gpu_compatibility.py
 info.py
 make_val_test.py
 mlp_aug_classifier.py
-train_cycle.py
 vis.py
