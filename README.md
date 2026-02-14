@@ -192,7 +192,7 @@ python gcgan_data_augmentation.py
 Train the PPO agent with multi-objective rewards.
 
 ```bash
-python train_cycle_mp_light_optimized.py
+python train_cycle.py
 ```
 
 ## 📄 License
