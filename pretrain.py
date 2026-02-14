@@ -41,7 +41,6 @@ def entropy_floor_from_labels(y: torch.Tensor, num_classes: int) -> float:
     eps = 1e-12
     # H(Bernoulli(r_c)) = - r_c ln r_c - (1-r_c) ln(1-r_c)
     Hc = -(r.clamp_min(eps).log() * r + (1 - r).clamp_min(eps).log() * (1 - r))  # [C]
-    # 평균: E_c[H] = sum_c p(c)*H(r_c) = sum_c r_c * H(r_c)
     floor = (r * Hc).sum().item()
     return floor
 
@@ -152,7 +151,7 @@ if __name__ == "__main__":
     data_dir_gan = r'/home/user/Desktop/intern_project_final/ppo_final/GAN/Pseudo_data/model_20250830_103826'
     
     for fold in range(1, 6):
-        print(f"[Fold {fold}] 데이터 로드 및 사전학습 시작")
+        print(f"[Fold {fold}] Data load and train!")
 
         gan_ds = GANSyntheticDataset(data_dir_gan, fold)
         X = gan_ds.data.numpy()    # [N, F] 
@@ -175,4 +174,4 @@ if __name__ == "__main__":
             save_path=f"actor_pretrain_fold{fold}.pt"
         )
 
-        print(f"[Fold {fold}] 학습 완료. 모델 저장 → actor_pretrain_fold{fold}.pt\n")
+        print(f"[Fold {fold}] Finished. → actor_pretrain_fold{fold}.pt\n")
