@@ -230,16 +230,18 @@ Email: hjyhera@korea.ac.kr
 GitHub: https://github.com/hjyhera
 
 ## 📌 Citation
+If you find this work useful, please consider citing our paper:
 
-If you find this work useful, please cite our paper.  
+```bibtex
 @inproceedings{ji2026reinforcement,
-  title={Reinforcement Learning with Multi-Objective Rewards for Functional Connectivity Augmentation},
-  author={Ji, Chang-Hoon and Hwang, Ji-Young and Oh, Ji-Hye and Kang, Yu-Kyum and Kwak, Su-Yeon and Han, Ji-Wung and Kam, Tae-Eui},
-  booktitle={ICASSP 2026-2026 IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP)},
-  pages={7822--7826},
-  year={2026},
-  organization={IEEE}
+  title     = {Reinforcement Learning with Multi-Objective Rewards for Functional Connectivity Augmentation},
+  author    = {Ji, Chang-Hoon and Hwang, Ji-Young and Oh, Ji-Hye and Kang, Yu-Kyum and Kwak, Su-Yeon and Han, Ji-Wung and Kam, Tae-Eui},
+  booktitle = {2026 IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP)},
+  pages     = {7822--7826},
+  year      = {2026},
+  organization = {IEEE}
 }
+```
 
 
 
