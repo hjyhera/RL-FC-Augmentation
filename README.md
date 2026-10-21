@@ -188,11 +188,17 @@ IEEE Journal of Biomedical and Health Informatics, 28(3), 1504–1515, 2023.
 python gcgan_data_augmentation.py
 ```
 
-### 5. Train the PPO Selection Agent
+### 5. Precompute Fidelity Reward and Alignment Reward
+
+```bash
+python main.py precompute
+```
+
+### 6. Train the PPO Selection Agent
 Train the PPO agent with multi-objective rewards.
 
 ```bash
-python train_cycle.py
+python main.py train
 ```
 
 ## 📄 License
@@ -226,7 +232,14 @@ GitHub: https://github.com/hjyhera
 ## 📌 Citation
 
 If you find this work useful, please cite our paper.  
-The BibTeX will be updated once the paper is officially published.
+@inproceedings{ji2026reinforcement,
+  title={Reinforcement Learning with Multi-Objective Rewards for Functional Connectivity Augmentation},
+  author={Ji, Chang-Hoon and Hwang, Ji-Young and Oh, Ji-Hye and Kang, Yu-Kyum and Kwak, Su-Yeon and Han, Ji-Wung and Kam, Tae-Eui},
+  booktitle={ICASSP 2026-2026 IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP)},
+  pages={7822--7826},
+  year={2026},
+  organization={IEEE}
+}
 
 
 
